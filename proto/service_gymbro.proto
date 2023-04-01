@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package pb;
+
+import "rpc_create_exercise.proto";
+
+option go_package = "github.com/asadzeynal/gymbro-api/pb";
+
+service GymBro {
+  rpc CreateExercise(CreateExerciseRequest) returns (CreateExerciseResponse) {}
+}

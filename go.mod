@@ -1,4 +1,4 @@
-module asadzeynal.com/gymbro-api
+module github.com/asadzeynal/gymbro-api
 
 go 1.20
 

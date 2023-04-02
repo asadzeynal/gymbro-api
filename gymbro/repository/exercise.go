@@ -23,12 +23,9 @@ func NewExerciseRepository(conn *sql.DB) *exerciseRepository {
 
 func (e *exerciseRepository) Store(ctx context.Context, exercise *domain.Exercise) (uuid.UUID, error) {
 	uuid, err := e.queries.AddExercise(ctx, postgres.AddExerciseParams{
-		ID:   exercise.ID,
-		Name: exercise.Name,
-		Description: sql.NullString{
-			String: exercise.Description,
-			Valid:  true,
-		},
+		ID:          exercise.ID,
+		Name:        exercise.Name,
+		Description: exercise.Description,
 	})
 	return uuid, err
 }
@@ -66,6 +63,6 @@ func convertToDomain(dbEx postgres.Exercise) domain.Exercise {
 	return domain.Exercise{
 		ID:          dbEx.ID,
 		Name:        dbEx.Name,
-		Description: dbEx.Description.String,
+		Description: dbEx.Description,
 	}
 }

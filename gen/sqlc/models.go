@@ -5,7 +5,6 @@
 package db
 
 import (
-	"database/sql"
 	"time"
 
 	"github.com/google/uuid"
@@ -14,7 +13,7 @@ import (
 type Exercise struct {
 	ID          uuid.UUID
 	Name        string
-	Description sql.NullString
+	Description string
 }
 
 type Template struct {

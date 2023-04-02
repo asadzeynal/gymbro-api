@@ -7,7 +7,6 @@ package db
 
 import (
 	"context"
-	"database/sql"
 
 	"github.com/google/uuid"
 )
@@ -22,7 +21,7 @@ RETURNING
 type AddExerciseParams struct {
 	ID          uuid.UUID
 	Name        string
-	Description sql.NullString
+	Description string
 }
 
 func (q *Queries) AddExercise(ctx context.Context, arg AddExerciseParams) (uuid.UUID, error) {

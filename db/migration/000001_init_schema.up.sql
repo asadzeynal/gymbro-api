@@ -1,7 +1,7 @@
 CREATE TABLE "exercises" (
   "id" uuid PRIMARY KEY,
   "name" varchar NOT NULL,
-  "description" varchar
+  "description" varchar NOT NULL
 );
 
 CREATE TABLE "users" (

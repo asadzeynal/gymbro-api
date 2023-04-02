@@ -4,3 +4,27 @@ INSERT INTO exercises (id, name, description)
 RETURNING
     id;
 
+-- name: FetchExercises :many
+SELECT
+    id,
+    name,
+    description
+FROM
+    exercises
+ORDER BY
+    name ASC;
+
+-- name: DeleteExercise :exec
+DELETE FROM exercises
+WHERE id = $1;
+
+-- name: GetExerciseById :one
+SELECT
+    id,
+    name,
+    description
+FROM
+    exercises
+WHERE
+    id = $1;
+

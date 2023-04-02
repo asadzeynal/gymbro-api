@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package pb;
+
+import "exercise.proto";
+
+option go_package = "github.com/asadzeynal/gymbro-api/pb";
+
+message GetExercisesByInitialRequest {}
+
+message GetExercisesByInitialResponse { map<string, Exercise> exercises = 1; }

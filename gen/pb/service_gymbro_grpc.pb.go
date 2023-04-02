@@ -23,6 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type GymBroClient interface {
 	CreateExercise(ctx context.Context, in *CreateExerciseRequest, opts ...grpc.CallOption) (*CreateExerciseResponse, error)
+	GetExercisesByInitial(ctx context.Context, in *GetExercisesByInitialRequest, opts ...grpc.CallOption) (*GetExercisesByInitialResponse, error)
 }
 
 type gymBroClient struct {
@@ -42,11 +43,21 @@ func (c *gymBroClient) CreateExercise(ctx context.Context, in *CreateExerciseReq
 	return out, nil
 }
 
+func (c *gymBroClient) GetExercisesByInitial(ctx context.Context, in *GetExercisesByInitialRequest, opts ...grpc.CallOption) (*GetExercisesByInitialResponse, error) {
+	out := new(GetExercisesByInitialResponse)
+	err := c.cc.Invoke(ctx, "/pb.GymBro/GetExercisesByInitial", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // GymBroServer is the server API for GymBro service.
 // All implementations must embed UnimplementedGymBroServer
 // for forward compatibility
 type GymBroServer interface {
 	CreateExercise(context.Context, *CreateExerciseRequest) (*CreateExerciseResponse, error)
+	GetExercisesByInitial(context.Context, *GetExercisesByInitialRequest) (*GetExercisesByInitialResponse, error)
 	mustEmbedUnimplementedGymBroServer()
 }
 
@@ -56,6 +67,9 @@ type UnimplementedGymBroServer struct {
 
 func (UnimplementedGymBroServer) CreateExercise(context.Context, *CreateExerciseRequest) (*CreateExerciseResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateExercise not implemented")
+}
+func (UnimplementedGymBroServer) GetExercisesByInitial(context.Context, *GetExercisesByInitialRequest) (*GetExercisesByInitialResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetExercisesByInitial not implemented")
 }
 func (UnimplementedGymBroServer) mustEmbedUnimplementedGymBroServer() {}
 
@@ -88,6 +102,24 @@ func _GymBro_CreateExercise_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _GymBro_GetExercisesByInitial_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetExercisesByInitialRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GymBroServer).GetExercisesByInitial(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.GymBro/GetExercisesByInitial",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GymBroServer).GetExercisesByInitial(ctx, req.(*GetExercisesByInitialRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // GymBro_ServiceDesc is the grpc.ServiceDesc for GymBro service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -98,6 +130,10 @@ var GymBro_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateExercise",
 			Handler:    _GymBro_CreateExercise_Handler,
+		},
+		{
+			MethodName: "GetExercisesByInitial",
+			Handler:    _GymBro_GetExercisesByInitial_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

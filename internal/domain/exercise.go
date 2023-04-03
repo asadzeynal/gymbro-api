@@ -20,3 +20,5 @@ type ExerciseRepository interface {
 	Fetch(ctx context.Context) ([]Exercise, error)
 	GetById(ctx context.Context, id uuid.UUID) (Exercise, error)
 }
+
+

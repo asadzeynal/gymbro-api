@@ -4,8 +4,8 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/asadzeynal/gymbro-api/domain"
 	postgres "github.com/asadzeynal/gymbro-api/gen/sqlc"
+	"github.com/asadzeynal/gymbro-api/internal/domain"
 	"github.com/google/uuid"
 )
 

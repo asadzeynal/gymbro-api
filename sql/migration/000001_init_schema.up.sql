@@ -23,7 +23,7 @@ CREATE TABLE "templates" (
 CREATE TABLE "template_exercises" (
   "id" uuid PRIMARY KEY,
   "template_id" uuid NOT NULL,
-  "exercise_id" varchar(255) NOT NULL,
+  "exercise_id" uuid NOT NULL,
   "display_order" int NOT NULL DEFAULT 0,
   "created_at" timestamp NOT NULL DEFAULT (now()),
   "updated_at" timestamp NOT NULL DEFAULT (now())
@@ -50,7 +50,7 @@ CREATE TABLE "workouts" (
 CREATE TABLE "workout_exercises" (
   "id" uuid PRIMARY KEY,
   "workout_id" uuid NOT NULL,
-  "exercise_id" varchar(255) NOT NULL,
+  "exercise_id" uuid NOT NULL,
   "display_order" int NOT NULL DEFAULT 0,
   "created_at" timestamp NOT NULL DEFAULT (now()),
   "updated_at" timestamp NOT NULL DEFAULT (now())

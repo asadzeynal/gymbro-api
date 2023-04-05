@@ -38,6 +38,9 @@ func (e *exerciseRepository) Delete(ctx context.Context, id uuid.UUID) error {
 func (e *exerciseRepository) Fetch(ctx context.Context) ([]domain.Exercise, error) {
 	excs, err := e.queries.FetchExercises(ctx)
 	if err != nil {
+		if err == sql.ErrNoRows {
+			return []domain.Exercise{}, nil
+		}
 		return []domain.Exercise{}, err
 	}
 

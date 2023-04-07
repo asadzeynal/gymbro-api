@@ -6,15 +6,17 @@ import (
 
 	postgres "github.com/asadzeynal/gymbro-api/gen/sqlc"
 	"github.com/asadzeynal/gymbro-api/internal/domain"
-	"github.com/google/uuid"
+	"github.com/gofrs/uuid/v5"
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type exerciseRepository struct {
-	conn    *sql.DB
+	conn    *pgx.Conn
 	queries postgres.Querier
 }
 
-func NewExerciseRepository(conn *sql.DB) *exerciseRepository {
+func NewExerciseRepository(conn *pgx.Conn) *exerciseRepository {
 	return &exerciseRepository{
 		conn,
 		postgres.New(conn),
@@ -22,16 +24,21 @@ func NewExerciseRepository(conn *sql.DB) *exerciseRepository {
 }
 
 func (e *exerciseRepository) Store(ctx context.Context, exercise *domain.Exercise) (uuid.UUID, error) {
+	id, err := uuid.NewV4()
+	if err != nil {
+		return uuid.UUID{}, err
+	}
 	uuid, err := e.queries.AddExercise(ctx, postgres.AddExerciseParams{
-		ID:          exercise.ID,
+		ID:          pgtype.UUID{Bytes: id, Valid: true},
 		Name:        exercise.Name,
 		Description: exercise.Description,
 	})
-	return uuid, err
+	return uuid.Bytes, err
 }
 
 func (e *exerciseRepository) Delete(ctx context.Context, id uuid.UUID) error {
-	err := e.queries.DeleteExercise(ctx, id)
+	uuid := pgtype.UUID{Bytes: id, Valid: true}
+	err := e.queries.DeleteExercise(ctx, uuid)
 	return err
 }
 
@@ -54,7 +61,7 @@ func (e *exerciseRepository) Fetch(ctx context.Context) ([]domain.Exercise, erro
 }
 
 func (e *exerciseRepository) GetById(ctx context.Context, id uuid.UUID) (domain.Exercise, error) {
-	ex, err := e.queries.GetExerciseById(ctx, id)
+	ex, err := e.queries.GetExerciseById(ctx, pgtype.UUID{Bytes: [16]byte(id.Bytes()), Valid: true})
 	if err != nil {
 		return domain.Exercise{}, err
 	}
@@ -63,8 +70,9 @@ func (e *exerciseRepository) GetById(ctx context.Context, id uuid.UUID) (domain.
 }
 
 func convertToDomain(dbEx postgres.Exercise) domain.Exercise {
+
 	return domain.Exercise{
-		ID:          dbEx.ID,
+		ID:          uuid.FromBytesOrNil(dbEx.ID.Bytes[:]),
 		Name:        dbEx.Name,
 		Description: dbEx.Description,
 	}

@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package pb;
 
-import "exercise.proto";
-
 option go_package = "github.com/asadzeynal/gymbro-api/pb";
 
 message CreateExerciseRequest {
@@ -11,4 +9,4 @@ message CreateExerciseRequest {
   string description = 2;
 }
 
-message CreateExerciseResponse { Exercise exercise = 1; }
+message CreateExerciseResponse { string id = 1; }

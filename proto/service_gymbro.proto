@@ -2,12 +2,12 @@ syntax = "proto3";
 
 package pb;
 
-import "rpc_get_exercises_by_initial.proto";
+import "rpc_get_exercises.proto";
 import "rpc_create_exercise.proto";
 
 option go_package = "github.com/asadzeynal/gymbro-api/pb";
 
-service GymBro {
+service ExerciseService {
   rpc CreateExercise(CreateExerciseRequest) returns (CreateExerciseResponse) {}
-  rpc GetExercisesByInitial(GetExercisesByInitialRequest) returns (GetExercisesByInitialResponse) {}
+  rpc GetExercises(GetExercisesRequest) returns (GetExercisesResponse) {}
 }

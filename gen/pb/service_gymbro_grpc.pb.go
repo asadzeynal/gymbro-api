@@ -18,122 +18,122 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// GymBroClient is the client API for GymBro service.
+// ExerciseServiceClient is the client API for ExerciseService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type GymBroClient interface {
+type ExerciseServiceClient interface {
 	CreateExercise(ctx context.Context, in *CreateExerciseRequest, opts ...grpc.CallOption) (*CreateExerciseResponse, error)
-	GetExercisesByInitial(ctx context.Context, in *GetExercisesByInitialRequest, opts ...grpc.CallOption) (*GetExercisesByInitialResponse, error)
+	GetExercises(ctx context.Context, in *GetExercisesRequest, opts ...grpc.CallOption) (*GetExercisesResponse, error)
 }
 
-type gymBroClient struct {
+type exerciseServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewGymBroClient(cc grpc.ClientConnInterface) GymBroClient {
-	return &gymBroClient{cc}
+func NewExerciseServiceClient(cc grpc.ClientConnInterface) ExerciseServiceClient {
+	return &exerciseServiceClient{cc}
 }
 
-func (c *gymBroClient) CreateExercise(ctx context.Context, in *CreateExerciseRequest, opts ...grpc.CallOption) (*CreateExerciseResponse, error) {
+func (c *exerciseServiceClient) CreateExercise(ctx context.Context, in *CreateExerciseRequest, opts ...grpc.CallOption) (*CreateExerciseResponse, error) {
 	out := new(CreateExerciseResponse)
-	err := c.cc.Invoke(ctx, "/pb.GymBro/CreateExercise", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/pb.ExerciseService/CreateExercise", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *gymBroClient) GetExercisesByInitial(ctx context.Context, in *GetExercisesByInitialRequest, opts ...grpc.CallOption) (*GetExercisesByInitialResponse, error) {
-	out := new(GetExercisesByInitialResponse)
-	err := c.cc.Invoke(ctx, "/pb.GymBro/GetExercisesByInitial", in, out, opts...)
+func (c *exerciseServiceClient) GetExercises(ctx context.Context, in *GetExercisesRequest, opts ...grpc.CallOption) (*GetExercisesResponse, error) {
+	out := new(GetExercisesResponse)
+	err := c.cc.Invoke(ctx, "/pb.ExerciseService/GetExercises", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// GymBroServer is the server API for GymBro service.
-// All implementations must embed UnimplementedGymBroServer
+// ExerciseServiceServer is the server API for ExerciseService service.
+// All implementations must embed UnimplementedExerciseServiceServer
 // for forward compatibility
-type GymBroServer interface {
+type ExerciseServiceServer interface {
 	CreateExercise(context.Context, *CreateExerciseRequest) (*CreateExerciseResponse, error)
-	GetExercisesByInitial(context.Context, *GetExercisesByInitialRequest) (*GetExercisesByInitialResponse, error)
-	mustEmbedUnimplementedGymBroServer()
+	GetExercises(context.Context, *GetExercisesRequest) (*GetExercisesResponse, error)
+	mustEmbedUnimplementedExerciseServiceServer()
 }
 
-// UnimplementedGymBroServer must be embedded to have forward compatible implementations.
-type UnimplementedGymBroServer struct {
+// UnimplementedExerciseServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedExerciseServiceServer struct {
 }
 
-func (UnimplementedGymBroServer) CreateExercise(context.Context, *CreateExerciseRequest) (*CreateExerciseResponse, error) {
+func (UnimplementedExerciseServiceServer) CreateExercise(context.Context, *CreateExerciseRequest) (*CreateExerciseResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateExercise not implemented")
 }
-func (UnimplementedGymBroServer) GetExercisesByInitial(context.Context, *GetExercisesByInitialRequest) (*GetExercisesByInitialResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetExercisesByInitial not implemented")
+func (UnimplementedExerciseServiceServer) GetExercises(context.Context, *GetExercisesRequest) (*GetExercisesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetExercises not implemented")
 }
-func (UnimplementedGymBroServer) mustEmbedUnimplementedGymBroServer() {}
+func (UnimplementedExerciseServiceServer) mustEmbedUnimplementedExerciseServiceServer() {}
 
-// UnsafeGymBroServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to GymBroServer will
+// UnsafeExerciseServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ExerciseServiceServer will
 // result in compilation errors.
-type UnsafeGymBroServer interface {
-	mustEmbedUnimplementedGymBroServer()
+type UnsafeExerciseServiceServer interface {
+	mustEmbedUnimplementedExerciseServiceServer()
 }
 
-func RegisterGymBroServer(s grpc.ServiceRegistrar, srv GymBroServer) {
-	s.RegisterService(&GymBro_ServiceDesc, srv)
+func RegisterExerciseServiceServer(s grpc.ServiceRegistrar, srv ExerciseServiceServer) {
+	s.RegisterService(&ExerciseService_ServiceDesc, srv)
 }
 
-func _GymBro_CreateExercise_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _ExerciseService_CreateExercise_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateExerciseRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GymBroServer).CreateExercise(ctx, in)
+		return srv.(ExerciseServiceServer).CreateExercise(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.GymBro/CreateExercise",
+		FullMethod: "/pb.ExerciseService/CreateExercise",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GymBroServer).CreateExercise(ctx, req.(*CreateExerciseRequest))
+		return srv.(ExerciseServiceServer).CreateExercise(ctx, req.(*CreateExerciseRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GymBro_GetExercisesByInitial_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetExercisesByInitialRequest)
+func _ExerciseService_GetExercises_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetExercisesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GymBroServer).GetExercisesByInitial(ctx, in)
+		return srv.(ExerciseServiceServer).GetExercises(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.GymBro/GetExercisesByInitial",
+		FullMethod: "/pb.ExerciseService/GetExercises",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GymBroServer).GetExercisesByInitial(ctx, req.(*GetExercisesByInitialRequest))
+		return srv.(ExerciseServiceServer).GetExercises(ctx, req.(*GetExercisesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// GymBro_ServiceDesc is the grpc.ServiceDesc for GymBro service.
+// ExerciseService_ServiceDesc is the grpc.ServiceDesc for ExerciseService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var GymBro_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "pb.GymBro",
-	HandlerType: (*GymBroServer)(nil),
+var ExerciseService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "pb.ExerciseService",
+	HandlerType: (*ExerciseServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "CreateExercise",
-			Handler:    _GymBro_CreateExercise_Handler,
+			Handler:    _ExerciseService_CreateExercise_Handler,
 		},
 		{
-			MethodName: "GetExercisesByInitial",
-			Handler:    _GymBro_GetExercisesByInitial_Handler,
+			MethodName: "GetExercises",
+			Handler:    _ExerciseService_GetExercises_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

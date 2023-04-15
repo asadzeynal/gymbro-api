@@ -3,7 +3,7 @@ package domain
 import (
 	"context"
 
-	"github.com/google/uuid"
+	"github.com/gofrs/uuid/v5"
 )
 
 // Exercise is representing the Exercise data struct
@@ -20,5 +20,3 @@ type ExerciseRepository interface {
 	Fetch(ctx context.Context) ([]Exercise, error)
 	GetById(ctx context.Context, id uuid.UUID) (Exercise, error)
 }
-
-

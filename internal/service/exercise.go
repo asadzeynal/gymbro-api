@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/asadzeynal/gymbro-api/internal/domain"
@@ -16,8 +17,20 @@ func NewExerciseService(er domain.ExerciseRepository, timeout time.Duration) *ex
 	return &exerciseService{er, timeout}
 }
 
+func (es *exerciseService) Store(c context.Context, ex *domain.Exercise) (string, error) {
+	ctx, cancel := context.WithTimeout(c, es.contextTimeout)
+	defer cancel()
+
+	id, err := es.exerciseRepo.Store(ctx, ex)
+	if err != nil {
+		return "", fmt.Errorf("error when saving the exercise: %w", err)
+	}
+
+	return id.String(), nil
+}
+
 // Returns Exercises grouped by first letter
-func (es *exerciseService) FetchGroupedByInitial(c context.Context) (map[string][]domain.Exercise, error) {
+func (es *exerciseService) Fetch(c context.Context) ([]domain.Exercise, error) {
 	ctx, cancel := context.WithTimeout(c, es.contextTimeout)
 	defer cancel()
 
@@ -25,15 +38,5 @@ func (es *exerciseService) FetchGroupedByInitial(c context.Context) (map[string]
 	if err != nil {
 		return nil, err
 	}
-	grouped := groupExerciseByInitial(res)
-	return grouped, nil
-}
-
-func groupExerciseByInitial(exs []domain.Exercise) map[string][]domain.Exercise {
-	grouped := make(map[string][]domain.Exercise)
-	for i := range exs {
-		initial := exs[i].Name[:1]
-		grouped[initial] = append(grouped[initial], exs[i])
-	}
-	return grouped
+	return res, nil
 }

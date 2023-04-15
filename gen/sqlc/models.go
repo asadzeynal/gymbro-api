@@ -42,11 +42,10 @@ type TemplateSet struct {
 }
 
 type User struct {
-	ID        uuid.UUID
-	Email     string
-	Password  string
-	CreatedAt pgtype.Timestamp
-	UpdatedAt pgtype.Timestamp
+	ID          uuid.UUID
+	PhoneNumber string
+	CreatedAt   pgtype.Timestamp
+	UpdatedAt   pgtype.Timestamp
 }
 
 type Workout struct {

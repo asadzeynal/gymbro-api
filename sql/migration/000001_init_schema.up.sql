@@ -6,8 +6,7 @@ CREATE TABLE "exercises" (
 
 CREATE TABLE "users" (
   "id" uuid PRIMARY KEY,
-  "email" varchar(255) UNIQUE NOT NULL,
-  "password" varchar(255) NOT NULL,
+  "phone_number" varchar(255) UNIQUE NOT NULL,
   "created_at" timestamp NOT NULL DEFAULT (now()),
   "updated_at" timestamp NOT NULL DEFAULT (now())
 );

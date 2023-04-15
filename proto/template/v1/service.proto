@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package proto.template.v1;
+
+option go_package = "github.com/asadzeynal/gymbro-api/pb";
+
+message TemplateSet {
+  string id = 1;
+  string template_exercise_id = 2;
+  int32 reps = 3;
+  float weight = 4;
+}
+
+message TemplateExericse {
+  string id = 1;
+  string template_id = 2;
+  string exercise_id = 3;
+  int32 display_order = 4;
+  repeated TemplateSet sets = 5;
+}
+
+message Template {
+  string id = 1;
+  string name = 2;
+  string user_id = 3;
+  repeated TemplateExericse exercises = 4;
+}
+
+message CreateTemplateRequest {
+  string name = 1;
+  repeated TemplateExericse exercises = 2;
+}
+
+message CreateTemplateResponse {
+  string id = 1;
+}
+
+message GetTemplatesByUserIdRequest {
+  string id = 1;
+}
+
+message GetTemplatesByUserIdResponse {
+  repeated Template templates = 1;
+}
+
+service TemplateService {
+  rpc CreateTemplate(CreateTemplateRequest) returns (CreateTemplateResponse) {}
+  rpc GetTemplatesByUserId(GetTemplatesByUserIdRequest) returns (GetTemplatesByUserIdResponse) {}
+}

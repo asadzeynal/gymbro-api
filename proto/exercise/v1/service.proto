@@ -15,11 +15,15 @@ message CreateExerciseRequest {
   string description = 2;
 }
 
-message CreateExerciseResponse { string id = 1; }
+message CreateExerciseResponse {
+  string id = 1;
+}
 
 message GetExercisesRequest {}
 
-message GetExercisesResponse { repeated Exercise exercises = 1; }
+message GetExercisesResponse {
+  repeated Exercise exercises = 1;
+}
 
 service ExerciseService {
   rpc CreateExercise(CreateExerciseRequest) returns (CreateExerciseResponse) {}

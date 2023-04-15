@@ -3,7 +3,7 @@ package gapi
 import (
 	"context"
 
-	"github.com/asadzeynal/gymbro-api/gen/pb"
+	pb "github.com/asadzeynal/gymbro-api/gen/proto/exercise/v1"
 	"github.com/asadzeynal/gymbro-api/internal/domain"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package proto.exercise.v1;
+
+option go_package = "github.com/asadzeynal/gymbro-api/pb";
+
+message Exercise {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+}
+
+message CreateExerciseRequest {
+  string name = 1;
+  string description = 2;
+}
+
+message CreateExerciseResponse { string id = 1; }
+
+message GetExercisesRequest {}
+
+message GetExercisesResponse { repeated Exercise exercises = 1; }
+
+service ExerciseService {
+  rpc CreateExercise(CreateExerciseRequest) returns (CreateExerciseResponse) {}
+  rpc GetExercises(GetExercisesRequest) returns (GetExercisesResponse) {}
+}

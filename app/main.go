@@ -7,7 +7,7 @@ import (
 	"net"
 	"time"
 
-	"github.com/asadzeynal/gymbro-api/gen/pb"
+	pb "github.com/asadzeynal/gymbro-api/gen/proto/exercise/v1"
 	"github.com/asadzeynal/gymbro-api/internal/controller/gapi"
 	"github.com/asadzeynal/gymbro-api/internal/repository"
 	"github.com/asadzeynal/gymbro-api/internal/service"

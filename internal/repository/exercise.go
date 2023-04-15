@@ -8,7 +8,6 @@ import (
 	"github.com/asadzeynal/gymbro-api/internal/domain"
 	"github.com/gofrs/uuid/v5"
 	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type exerciseRepository struct {
@@ -29,16 +28,15 @@ func (e *exerciseRepository) Store(ctx context.Context, exercise *domain.Exercis
 		return uuid.UUID{}, err
 	}
 	uuid, err := e.queries.AddExercise(ctx, postgres.AddExerciseParams{
-		ID:          pgtype.UUID{Bytes: id, Valid: true},
+		ID:          id,
 		Name:        exercise.Name,
 		Description: exercise.Description,
 	})
-	return uuid.Bytes, err
+	return uuid, err
 }
 
 func (e *exerciseRepository) Delete(ctx context.Context, id uuid.UUID) error {
-	uuid := pgtype.UUID{Bytes: id, Valid: true}
-	err := e.queries.DeleteExercise(ctx, uuid)
+	err := e.queries.DeleteExercise(ctx, id)
 	return err
 }
 
@@ -61,7 +59,7 @@ func (e *exerciseRepository) Fetch(ctx context.Context) ([]domain.Exercise, erro
 }
 
 func (e *exerciseRepository) GetById(ctx context.Context, id uuid.UUID) (domain.Exercise, error) {
-	ex, err := e.queries.GetExerciseById(ctx, pgtype.UUID{Bytes: [16]byte(id.Bytes()), Valid: true})
+	ex, err := e.queries.GetExerciseById(ctx, id)
 	if err != nil {
 		return domain.Exercise{}, err
 	}
@@ -70,9 +68,8 @@ func (e *exerciseRepository) GetById(ctx context.Context, id uuid.UUID) (domain.
 }
 
 func convertToDomain(dbEx postgres.Exercise) domain.Exercise {
-
 	return domain.Exercise{
-		ID:          uuid.FromBytesOrNil(dbEx.ID.Bytes[:]),
+		ID:          dbEx.ID,
 		Name:        dbEx.Name,
 		Description: dbEx.Description,
 	}

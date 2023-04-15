@@ -7,7 +7,7 @@ package db
 import (
 	"context"
 
-	"github.com/google/uuid"
+	uuid "github.com/gofrs/uuid/v5"
 )
 
 type Querier interface {

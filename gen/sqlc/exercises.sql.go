@@ -8,7 +8,7 @@ package db
 import (
 	"context"
 
-	"github.com/google/uuid"
+	uuid "github.com/gofrs/uuid/v5"
 )
 
 const addExercise = `-- name: AddExercise :one
@@ -25,7 +25,7 @@ type AddExerciseParams struct {
 }
 
 func (q *Queries) AddExercise(ctx context.Context, arg AddExerciseParams) (uuid.UUID, error) {
-	row := q.db.QueryRowContext(ctx, addExercise, arg.ID, arg.Name, arg.Description)
+	row := q.db.QueryRow(ctx, addExercise, arg.ID, arg.Name, arg.Description)
 	var id uuid.UUID
 	err := row.Scan(&id)
 	return id, err
@@ -37,7 +37,7 @@ WHERE id = $1
 `
 
 func (q *Queries) DeleteExercise(ctx context.Context, id uuid.UUID) error {
-	_, err := q.db.ExecContext(ctx, deleteExercise, id)
+	_, err := q.db.Exec(ctx, deleteExercise, id)
 	return err
 }
 
@@ -53,7 +53,7 @@ ORDER BY
 `
 
 func (q *Queries) FetchExercises(ctx context.Context) ([]Exercise, error) {
-	rows, err := q.db.QueryContext(ctx, fetchExercises)
+	rows, err := q.db.Query(ctx, fetchExercises)
 	if err != nil {
 		return nil, err
 	}
@@ -65,9 +65,6 @@ func (q *Queries) FetchExercises(ctx context.Context) ([]Exercise, error) {
 			return nil, err
 		}
 		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err
@@ -87,7 +84,7 @@ WHERE
 `
 
 func (q *Queries) GetExerciseById(ctx context.Context, id uuid.UUID) (Exercise, error) {
-	row := q.db.QueryRowContext(ctx, getExerciseById, id)
+	row := q.db.QueryRow(ctx, getExerciseById, id)
 	var i Exercise
 	err := row.Scan(&i.ID, &i.Name, &i.Description)
 	return i, err

@@ -8,7 +8,7 @@ package db
 import (
 	"context"
 
-	"github.com/google/uuid"
+	uuid "github.com/gofrs/uuid/v5"
 )
 
 const addTemplate = `-- name: AddTemplate :one
@@ -25,7 +25,7 @@ type AddTemplateParams struct {
 }
 
 func (q *Queries) AddTemplate(ctx context.Context, arg AddTemplateParams) (uuid.UUID, error) {
-	row := q.db.QueryRowContext(ctx, addTemplate, arg.ID, arg.Name, arg.UserID)
+	row := q.db.QueryRow(ctx, addTemplate, arg.ID, arg.Name, arg.UserID)
 	var id uuid.UUID
 	err := row.Scan(&id)
 	return id, err

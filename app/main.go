@@ -5,9 +5,14 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"time"
 
 	"github.com/asadzeynal/gymbro-api/gen/pb"
 	"github.com/asadzeynal/gymbro-api/internal/controller/gapi"
+	"github.com/asadzeynal/gymbro-api/internal/repository"
+	"github.com/asadzeynal/gymbro-api/internal/service"
+	pgxuuid "github.com/jackc/pgx-gofrs-uuid"
+
 	"github.com/jackc/pgx/v5"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
@@ -46,10 +51,15 @@ func main() {
 		}
 	}()
 
-	server := gapi.NewServer()
+	pgxuuid.Register(dbConn.TypeMap())
+
+	exerciseRepo := repository.NewExerciseRepository(dbConn)
+	exerciseService := service.NewExerciseService(exerciseRepo, 5000*time.Millisecond)
+
+	server := gapi.NewServer(exerciseService)
 	grpcServer := grpc.NewServer()
 	reflection.Register(grpcServer)
-	pb.RegisterGymBroServer(grpcServer, server)
+	pb.RegisterExerciseServiceServer(grpcServer, server)
 
 	grpcAddr := viper.GetString("server.address")
 	listener, err := net.Listen("tcp", grpcAddr)

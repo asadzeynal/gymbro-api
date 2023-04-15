@@ -5,9 +5,8 @@
 package db
 
 import (
-	"time"
-
-	"github.com/google/uuid"
+	uuid "github.com/gofrs/uuid/v5"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type Exercise struct {
@@ -20,17 +19,17 @@ type Template struct {
 	ID        uuid.UUID
 	Name      string
 	UserID    uuid.UUID
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	CreatedAt pgtype.Timestamp
+	UpdatedAt pgtype.Timestamp
 }
 
 type TemplateExercise struct {
 	ID           uuid.UUID
 	TemplateID   uuid.UUID
-	ExerciseID   string
+	ExerciseID   uuid.UUID
 	DisplayOrder int32
-	CreatedAt    time.Time
-	UpdatedAt    time.Time
+	CreatedAt    pgtype.Timestamp
+	UpdatedAt    pgtype.Timestamp
 }
 
 type TemplateSet struct {
@@ -38,34 +37,34 @@ type TemplateSet struct {
 	TemplateExerciseID uuid.UUID
 	Reps               int32
 	Weight             float64
-	CreatedAt          time.Time
-	UpdatedAt          time.Time
+	CreatedAt          pgtype.Timestamp
+	UpdatedAt          pgtype.Timestamp
 }
 
 type User struct {
 	ID        uuid.UUID
 	Email     string
 	Password  string
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	CreatedAt pgtype.Timestamp
+	UpdatedAt pgtype.Timestamp
 }
 
 type Workout struct {
 	ID        uuid.UUID
 	UserID    uuid.UUID
 	Name      string
-	Date      time.Time
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	Date      pgtype.Timestamp
+	CreatedAt pgtype.Timestamp
+	UpdatedAt pgtype.Timestamp
 }
 
 type WorkoutExercise struct {
 	ID           uuid.UUID
 	WorkoutID    uuid.UUID
-	ExerciseID   string
+	ExerciseID   uuid.UUID
 	DisplayOrder int32
-	CreatedAt    time.Time
-	UpdatedAt    time.Time
+	CreatedAt    pgtype.Timestamp
+	UpdatedAt    pgtype.Timestamp
 }
 
 type WorkoutSet struct {
@@ -73,6 +72,6 @@ type WorkoutSet struct {
 	WorkoutExerciseID uuid.UUID
 	Reps              int32
 	Weight            float64
-	CreatedAt         time.Time
-	UpdatedAt         time.Time
+	CreatedAt         pgtype.Timestamp
+	UpdatedAt         pgtype.Timestamp
 }

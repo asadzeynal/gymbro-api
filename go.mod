@@ -3,7 +3,8 @@ module github.com/asadzeynal/gymbro-api
 go 1.20
 
 require (
-	github.com/google/uuid v1.3.0
+	github.com/gofrs/uuid/v5 v5.0.0
+	github.com/jackc/pgx-gofrs-uuid v0.0.0-20230224015001-1d428863c2e2
 	github.com/jackc/pgx/v5 v5.3.1
 	github.com/spf13/viper v1.15.0
 	google.golang.org/grpc v1.54.0

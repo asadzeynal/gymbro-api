@@ -12,7 +12,7 @@ import (
 )
 
 const addTemplate = `-- name: AddTemplate :one
-INSERT INTO templates (id, name, user_id)
+INSERT INTO templates(id, name, user_id)
     VALUES ($1, $2, $3)
 RETURNING
     id
@@ -29,4 +29,163 @@ func (q *Queries) AddTemplate(ctx context.Context, arg AddTemplateParams) (uuid.
 	var id uuid.UUID
 	err := row.Scan(&id)
 	return id, err
+}
+
+const addTemplateExercise = `-- name: AddTemplateExercise :one
+INSERT INTO template_exercises(id, template_id, exercise_id, display_order)
+    VALUES ($1, $2, $3, $4)
+RETURNING
+    id
+`
+
+type AddTemplateExerciseParams struct {
+	ID           uuid.UUID
+	TemplateID   uuid.UUID
+	ExerciseID   uuid.UUID
+	DisplayOrder int32
+}
+
+func (q *Queries) AddTemplateExercise(ctx context.Context, arg AddTemplateExerciseParams) (uuid.UUID, error) {
+	row := q.db.QueryRow(ctx, addTemplateExercise,
+		arg.ID,
+		arg.TemplateID,
+		arg.ExerciseID,
+		arg.DisplayOrder,
+	)
+	var id uuid.UUID
+	err := row.Scan(&id)
+	return id, err
+}
+
+const addTemplateSet = `-- name: AddTemplateSet :one
+INSERT INTO template_sets(id, reps, weight, template_exercise_id)
+    VALUES ($1, $2, $3, $4)
+RETURNING
+    id
+`
+
+type AddTemplateSetParams struct {
+	ID                 uuid.UUID
+	Reps               int32
+	Weight             float64
+	TemplateExerciseID uuid.UUID
+}
+
+func (q *Queries) AddTemplateSet(ctx context.Context, arg AddTemplateSetParams) (uuid.UUID, error) {
+	row := q.db.QueryRow(ctx, addTemplateSet,
+		arg.ID,
+		arg.Reps,
+		arg.Weight,
+		arg.TemplateExerciseID,
+	)
+	var id uuid.UUID
+	err := row.Scan(&id)
+	return id, err
+}
+
+const getTemplateExercisesByTemplateIds = `-- name: GetTemplateExercisesByTemplateIds :many
+SELECT
+    id, template_id, exercise_id, display_order, created_at, updated_at
+FROM
+    template_exercises
+WHERE
+    template_id IN ($1)
+`
+
+func (q *Queries) GetTemplateExercisesByTemplateIds(ctx context.Context, templateID uuid.UUID) ([]TemplateExercise, error) {
+	rows, err := q.db.Query(ctx, getTemplateExercisesByTemplateIds, templateID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []TemplateExercise
+	for rows.Next() {
+		var i TemplateExercise
+		if err := rows.Scan(
+			&i.ID,
+			&i.TemplateID,
+			&i.ExerciseID,
+			&i.DisplayOrder,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getTemplateSetsByTemplateExerciseIds = `-- name: GetTemplateSetsByTemplateExerciseIds :many
+SELECT
+    id, template_exercise_id, reps, weight, created_at, updated_at
+FROM
+    template_sets
+WHERE
+    template_exercise_id IN ($1)
+`
+
+func (q *Queries) GetTemplateSetsByTemplateExerciseIds(ctx context.Context, templateExerciseID uuid.UUID) ([]TemplateSet, error) {
+	rows, err := q.db.Query(ctx, getTemplateSetsByTemplateExerciseIds, templateExerciseID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []TemplateSet
+	for rows.Next() {
+		var i TemplateSet
+		if err := rows.Scan(
+			&i.ID,
+			&i.TemplateExerciseID,
+			&i.Reps,
+			&i.Weight,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getTemplatesByUserId = `-- name: GetTemplatesByUserId :many
+SELECT
+    id, name, user_id, created_at, updated_at
+FROM
+    templates
+WHERE
+    user_id = $1
+`
+
+func (q *Queries) GetTemplatesByUserId(ctx context.Context, userID uuid.UUID) ([]Template, error) {
+	rows, err := q.db.Query(ctx, getTemplatesByUserId, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Template
+	for rows.Next() {
+		var i Template
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.UserID,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }

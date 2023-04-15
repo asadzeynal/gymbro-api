@@ -13,9 +13,14 @@ import (
 type Querier interface {
 	AddExercise(ctx context.Context, arg AddExerciseParams) (uuid.UUID, error)
 	AddTemplate(ctx context.Context, arg AddTemplateParams) (uuid.UUID, error)
+	AddTemplateExercise(ctx context.Context, arg AddTemplateExerciseParams) (uuid.UUID, error)
+	AddTemplateSet(ctx context.Context, arg AddTemplateSetParams) (uuid.UUID, error)
 	DeleteExercise(ctx context.Context, id uuid.UUID) error
 	FetchExercises(ctx context.Context) ([]Exercise, error)
 	GetExerciseById(ctx context.Context, id uuid.UUID) (Exercise, error)
+	GetTemplateExercisesByTemplateIds(ctx context.Context, templateID uuid.UUID) ([]TemplateExercise, error)
+	GetTemplateSetsByTemplateExerciseIds(ctx context.Context, templateExerciseID uuid.UUID) ([]TemplateSet, error)
+	GetTemplatesByUserId(ctx context.Context, userID uuid.UUID) ([]Template, error)
 }
 
 var _ Querier = (*Queries)(nil)

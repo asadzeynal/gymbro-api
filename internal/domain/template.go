@@ -7,24 +7,24 @@ import (
 )
 
 type TemplateSet struct {
-	Id                 string
+	Id                 uuid.UUID
 	TemplateExerciseId string
 	Reps               int32
 	Weight             float32
 }
 
 type TemplateExericse struct {
-	Id           string
-	TemplateId   string
-	ExerciseId   string
+	Id           uuid.UUID
+	TemplateId   uuid.UUID
+	ExerciseId   uuid.UUID
 	DisplayOrder int32
 	Sets         []TemplateSet
 }
 
 type Template struct {
-	Id        string
+	Id        uuid.UUID
 	Name      string
-	UserId    string
+	UserId    uuid.UUID
 	Exercises []TemplateExericse
 }
 

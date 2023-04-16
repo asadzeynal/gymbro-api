@@ -30,5 +30,5 @@ type Template struct {
 
 type TemplateRepository interface {
 	Store(ctx context.Context, template Template) (uuid.UUID, error)
-	FetchByUserId(ctx context.Context, id uuid.UUID) (Exercise, error)
+	FetchByUserId(ctx context.Context, id uuid.UUID) (Template, error)
 }

@@ -26,7 +26,7 @@ SELECT
 FROM
     template_exercises
 WHERE
-    template_id IN ($1);
+    template_id IN ($1::uuid[]);
 
 -- name: GetTemplateSetsByTemplateExerciseIds :many
 SELECT
@@ -34,5 +34,5 @@ SELECT
 FROM
     template_sets
 WHERE
-    template_exercise_id IN ($1);
+    template_exercise_id IN ($1::uuid[]);
 

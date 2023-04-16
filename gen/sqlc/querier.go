@@ -18,8 +18,8 @@ type Querier interface {
 	DeleteExercise(ctx context.Context, id uuid.UUID) error
 	FetchExercises(ctx context.Context) ([]Exercise, error)
 	GetExerciseById(ctx context.Context, id uuid.UUID) (Exercise, error)
-	GetTemplateExercisesByTemplateIds(ctx context.Context, templateID uuid.UUID) ([]TemplateExercise, error)
-	GetTemplateSetsByTemplateExerciseIds(ctx context.Context, templateExerciseID uuid.UUID) ([]TemplateSet, error)
+	GetTemplateExercisesByTemplateIds(ctx context.Context, dollar_1 []uuid.UUID) ([]TemplateExercise, error)
+	GetTemplateSetsByTemplateExerciseIds(ctx context.Context, dollar_1 []uuid.UUID) ([]TemplateSet, error)
 	GetTemplatesByUserId(ctx context.Context, userID uuid.UUID) ([]Template, error)
 }
 

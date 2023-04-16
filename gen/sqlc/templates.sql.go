@@ -81,11 +81,11 @@ SELECT
 FROM
     template_exercises
 WHERE
-    template_id IN ($1)
+    template_id IN ($1::uuid[])
 `
 
-func (q *Queries) GetTemplateExercisesByTemplateIds(ctx context.Context, templateID uuid.UUID) ([]TemplateExercise, error) {
-	rows, err := q.db.Query(ctx, getTemplateExercisesByTemplateIds, templateID)
+func (q *Queries) GetTemplateExercisesByTemplateIds(ctx context.Context, dollar_1 []uuid.UUID) ([]TemplateExercise, error) {
+	rows, err := q.db.Query(ctx, getTemplateExercisesByTemplateIds, dollar_1)
 	if err != nil {
 		return nil, err
 	}
@@ -117,11 +117,11 @@ SELECT
 FROM
     template_sets
 WHERE
-    template_exercise_id IN ($1)
+    template_exercise_id IN ($1::uuid[])
 `
 
-func (q *Queries) GetTemplateSetsByTemplateExerciseIds(ctx context.Context, templateExerciseID uuid.UUID) ([]TemplateSet, error) {
-	rows, err := q.db.Query(ctx, getTemplateSetsByTemplateExerciseIds, templateExerciseID)
+func (q *Queries) GetTemplateSetsByTemplateExerciseIds(ctx context.Context, dollar_1 []uuid.UUID) ([]TemplateSet, error) {
+	rows, err := q.db.Query(ctx, getTemplateSetsByTemplateExerciseIds, dollar_1)
 	if err != nil {
 		return nil, err
 	}

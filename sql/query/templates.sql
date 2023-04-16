@@ -1,14 +1,10 @@
--- name: AddTemplateSet :one
+-- name: AddTemplateSet :exec
 INSERT INTO template_sets(id, reps, weight, template_exercise_id)
-    VALUES ($1, $2, $3, $4)
-RETURNING
-    id;
+    VALUES ($1, $2, $3, $4);
 
--- name: AddTemplateExercise :one
+-- name: AddTemplateExercise :exec
 INSERT INTO template_exercises(id, template_id, exercise_id, display_order)
-    VALUES ($1, $2, $3, $4)
-RETURNING
-    id;
+    VALUES ($1, $2, $3, $4);
 
 -- name: AddTemplate :one
 INSERT INTO templates(id, name, user_id)

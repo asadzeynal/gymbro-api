@@ -31,11 +31,9 @@ func (q *Queries) AddTemplate(ctx context.Context, arg AddTemplateParams) (uuid.
 	return id, err
 }
 
-const addTemplateExercise = `-- name: AddTemplateExercise :one
+const addTemplateExercise = `-- name: AddTemplateExercise :exec
 INSERT INTO template_exercises(id, template_id, exercise_id, display_order)
     VALUES ($1, $2, $3, $4)
-RETURNING
-    id
 `
 
 type AddTemplateExerciseParams struct {
@@ -45,23 +43,19 @@ type AddTemplateExerciseParams struct {
 	DisplayOrder int32
 }
 
-func (q *Queries) AddTemplateExercise(ctx context.Context, arg AddTemplateExerciseParams) (uuid.UUID, error) {
-	row := q.db.QueryRow(ctx, addTemplateExercise,
+func (q *Queries) AddTemplateExercise(ctx context.Context, arg AddTemplateExerciseParams) error {
+	_, err := q.db.Exec(ctx, addTemplateExercise,
 		arg.ID,
 		arg.TemplateID,
 		arg.ExerciseID,
 		arg.DisplayOrder,
 	)
-	var id uuid.UUID
-	err := row.Scan(&id)
-	return id, err
+	return err
 }
 
-const addTemplateSet = `-- name: AddTemplateSet :one
+const addTemplateSet = `-- name: AddTemplateSet :exec
 INSERT INTO template_sets(id, reps, weight, template_exercise_id)
     VALUES ($1, $2, $3, $4)
-RETURNING
-    id
 `
 
 type AddTemplateSetParams struct {
@@ -71,16 +65,14 @@ type AddTemplateSetParams struct {
 	TemplateExerciseID uuid.UUID
 }
 
-func (q *Queries) AddTemplateSet(ctx context.Context, arg AddTemplateSetParams) (uuid.UUID, error) {
-	row := q.db.QueryRow(ctx, addTemplateSet,
+func (q *Queries) AddTemplateSet(ctx context.Context, arg AddTemplateSetParams) error {
+	_, err := q.db.Exec(ctx, addTemplateSet,
 		arg.ID,
 		arg.Reps,
 		arg.Weight,
 		arg.TemplateExerciseID,
 	)
-	var id uuid.UUID
-	err := row.Scan(&id)
-	return id, err
+	return err
 }
 
 const getTemplateExercisesByTemplateIds = `-- name: GetTemplateExercisesByTemplateIds :many

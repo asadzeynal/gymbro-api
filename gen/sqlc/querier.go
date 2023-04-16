@@ -13,8 +13,8 @@ import (
 type Querier interface {
 	AddExercise(ctx context.Context, arg AddExerciseParams) (uuid.UUID, error)
 	AddTemplate(ctx context.Context, arg AddTemplateParams) (uuid.UUID, error)
-	AddTemplateExercise(ctx context.Context, arg AddTemplateExerciseParams) (uuid.UUID, error)
-	AddTemplateSet(ctx context.Context, arg AddTemplateSetParams) (uuid.UUID, error)
+	AddTemplateExercise(ctx context.Context, arg AddTemplateExerciseParams) error
+	AddTemplateSet(ctx context.Context, arg AddTemplateSetParams) error
 	DeleteExercise(ctx context.Context, id uuid.UUID) error
 	FetchExercises(ctx context.Context) ([]Exercise, error)
 	GetExerciseById(ctx context.Context, id uuid.UUID) (Exercise, error)

@@ -8,7 +8,7 @@ import (
 
 type TemplateSet struct {
 	Id                 uuid.UUID
-	TemplateExerciseId string
+	TemplateExerciseId uuid.UUID
 	Reps               int32
 	Weight             float32
 }

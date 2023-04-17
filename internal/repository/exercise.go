@@ -52,7 +52,7 @@ func (e *exerciseRepository) Fetch(ctx context.Context) ([]domain.Exercise, erro
 	result := make([]domain.Exercise, len(excs))
 	for i := 0; i < len(excs); i++ {
 		ex := excs[i]
-		result[i] = convertToDomain(ex)
+		result[i] = exerciseToDomain(ex)
 	}
 
 	return result, nil
@@ -64,13 +64,5 @@ func (e *exerciseRepository) GetById(ctx context.Context, id uuid.UUID) (domain.
 		return domain.Exercise{}, err
 	}
 
-	return convertToDomain(ex), nil
-}
-
-func convertToDomain(dbEx postgres.Exercise) domain.Exercise {
-	return domain.Exercise{
-		ID:          dbEx.ID,
-		Name:        dbEx.Name,
-		Description: dbEx.Description,
-	}
+	return exerciseToDomain(ex), nil
 }

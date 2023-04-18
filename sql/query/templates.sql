@@ -20,19 +20,19 @@ FROM
 WHERE
     user_id = $1;
 
--- name: GetTemplateExercisesByTemplateIds :many
+-- name: GetTemplateExercisesByTemplateId :many
 SELECT
     *
 FROM
     template_exercises
 WHERE
-    template_id IN ($1::uuid[]);
+    template_id = $1;
 
--- name: GetTemplateSetsByTemplateExerciseIds :many
+-- name: GetTemplateSetsByTemplateExerciseId :many
 SELECT
     *
 FROM
     template_sets
 WHERE
-    template_exercise_id IN ($1::uuid[]);
+    template_exercise_id = $1;
 

@@ -75,17 +75,17 @@ func (q *Queries) AddTemplateSet(ctx context.Context, arg AddTemplateSetParams) 
 	return err
 }
 
-const getTemplateExercisesByTemplateIds = `-- name: GetTemplateExercisesByTemplateIds :many
+const getTemplateExercisesByTemplateId = `-- name: GetTemplateExercisesByTemplateId :many
 SELECT
     id, template_id, exercise_id, display_order, created_at, updated_at
 FROM
     template_exercises
 WHERE
-    template_id IN ($1::uuid[])
+    template_id = $1
 `
 
-func (q *Queries) GetTemplateExercisesByTemplateIds(ctx context.Context, dollar_1 []uuid.UUID) ([]TemplateExercise, error) {
-	rows, err := q.db.Query(ctx, getTemplateExercisesByTemplateIds, dollar_1)
+func (q *Queries) GetTemplateExercisesByTemplateId(ctx context.Context, templateID uuid.UUID) ([]TemplateExercise, error) {
+	rows, err := q.db.Query(ctx, getTemplateExercisesByTemplateId, templateID)
 	if err != nil {
 		return nil, err
 	}
@@ -111,17 +111,17 @@ func (q *Queries) GetTemplateExercisesByTemplateIds(ctx context.Context, dollar_
 	return items, nil
 }
 
-const getTemplateSetsByTemplateExerciseIds = `-- name: GetTemplateSetsByTemplateExerciseIds :many
+const getTemplateSetsByTemplateExerciseId = `-- name: GetTemplateSetsByTemplateExerciseId :many
 SELECT
     id, template_exercise_id, reps, weight, created_at, updated_at
 FROM
     template_sets
 WHERE
-    template_exercise_id IN ($1::uuid[])
+    template_exercise_id = $1
 `
 
-func (q *Queries) GetTemplateSetsByTemplateExerciseIds(ctx context.Context, dollar_1 []uuid.UUID) ([]TemplateSet, error) {
-	rows, err := q.db.Query(ctx, getTemplateSetsByTemplateExerciseIds, dollar_1)
+func (q *Queries) GetTemplateSetsByTemplateExerciseId(ctx context.Context, templateExerciseID uuid.UUID) ([]TemplateSet, error) {
+	rows, err := q.db.Query(ctx, getTemplateSetsByTemplateExerciseId, templateExerciseID)
 	if err != nil {
 		return nil, err
 	}
